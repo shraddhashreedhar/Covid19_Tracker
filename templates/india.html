@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Covid 19 Tracker</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+     
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
+    <script src="https://cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
+    <!--highcharts-->
+        
+    <script src="https://code.highcharts.com/maps/highmaps.js"></script>
+    <script src="https://code.highcharts.com/maps/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/mapdata/countries/in/in-all.js"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/series-label.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/export-data.js"></script>
+    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+
+  </head>
+
+<body>
+    <nav class="navbar navbar-dark bg-dark">
+      <p><center> <span class="navbar-brand mb-0 h1"><h1>Covid 19 Tracker</h1></span></center></p>
+      </nav>
+      <br>
+      <p><center>
+      <div class="container">
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('covid') }}">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="{{ url_for('india') }}">India</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('world') }}">World</a>
+        </li>
+      </ul>
+
+    <div class="container text-center">
+      <br>
+      <div class="alert alert-danger alert-dismissible fade show">
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+      <strong>Stay Safe !</strong> Total new cases are {{data['todayCases']}}
+      </div>
+  </div>
+  <br>
+
+  <!--India-->
+  <div class="card border-dark mb-3">
+    <div class="card-body text-dark">
+      <h1 class="card-title">Covid-19 India Analysis</h1>
+     
+    </div>
+  </div>
+  <br>
+  <!-- Confirmed cases-->
+  <div class ="row">
+    <div class="col-sm-3">
+  <div class="card text-white bg-info mb-3" style="max-width: 18rem;">
+    <div class="card-body">
+      <h5 class="card-title">Confirmed Cases</h5>
+      <p class="card-text">{{ data['cases'] }}</p>
+    </div>
+  </div>
+</div>
+  <!-- Recovered cases-->
+  <div class="col-sm-3">
+  <div class="card text-white bg-success mb-3" style="max-width: 18rem;">
+    <div class="card-body">
+      <h5 class="card-title">Recovered Cases</h5>
+      <p class="card-text">{{ data['recovered'] }}</p>
+    </div>
+  </div>
+</div>
+   <!-- Active Cases-->
+   <div class="col-sm-3">
+   <div class="card text-white bg-warning mb-3" style="max-width: 18rem;">
+    <div class="card-body">
+      <h5 class="card-title">Active Cases</h5>
+      <p class="card-text">{{ data['active'] }}</p>
+    </div>
+  </div>
+</div>
+  <!-- Death cases-->
+  <div class="col-sm-3">
+  <div class="card text-white bg-danger mb-3" style="max-width: 18rem;">
+    <div class="card-body">
+      <h5 class="card-title">Death Cases</h5>
+      <p class="card-text">{{ data['deaths'] }}</p>
+    </div>
+  </div>
+</div>
+</div>
+<br>
+<p><center>
+<h3>Cases on daily basis!</h3>
+<br>
+<div class ="row">
+  <div class="col-sm-3">
+<div class="card text-white bg-secondary mb-3" style="max-width: 18rem;">
+  <div class="card-body">
+    <h5 class="card-title">Daily Confirmed</h5>
+    <p class="card-text"> {{ data['todayCases']}}</p>
+  </div>
+</div>
+</div>
+<div class="col-sm-3">
+<div class="card text-white bg-secondary mb-3" style="max-width: 18rem;">
+  <div class="card-body">
+    <h5 class="card-title">Daily Recovered</h5>
+    <p class="card-text"> {{ data['todayRecovered']}}</p>
+  </div>
+</div>
+</div>
+<div class="col-sm-3">
+<div class="card text-white bg-secondary mb-3" style="max-width: 18rem;">
+  <div class="card-body">
+    <h5 class="card-title">Daily Deaths</h5>
+    <p class="card-text"> {{ data['todayDeaths']}}</p>
+  </div>
+</div>
+</div>
+
+<div class="col-sm-3">
+  <div class="card text-white bg-secondary mb-3" style="max-width: 18rem;">
+    <div class="card-body">
+      <h5 class="card-title">Critical</h5>
+      <p class="card-text"> {{ data['critical']}}</p>
+    </div>
+  </div>
+  </div>
+</div>
+<br>
+<h3>Analysis on Tests Conducted</h3>
+<br>
+<div class ="row">
+  <div class="col-sm-6">
+    <div class="card border-primary mb-6" style="max-width: 40rem;">
+      
+      <div class="card-body text-primary">
+        <h5 class="card-title">Number of tests conducted</h5>
+        <p class="card-text">{{ data['tests'] }}</p>
+      </div>
+    </div>
+    </div>
+
+    <div class="col-sm-6">
+      <div class="card border-primary mb-6" style="max-width: 40rem;">
+        <div class="card-body text-primary">
+          <h5 class="card-title">Tests per one million</h5>
+          <p class="card-text">{{ data['testsPerOneMillion']}}</p>
+        </div>
+      </div>
+      </div>
+</div>
+<br>
+<div class ="row">
+  <div class="col-sm-3">
+<div class="card border-info mb-3" style="max-width: 16rem;">
+  
+  <div class="card-body text-info">
+    <h5 class="card-title">Cases cases per one million</h5>
+    <p class="card-text">{{data['casesPerOneMillion'] }}</p>
+  </div>
+</div>
+</div>
+<div class="col-sm-3">
+<div class="card border-warning mb-3" style="max-width: 16rem;">
+  <div class="card-body text-warning">
+    <h5 class="card-title">Crtical cases per one million</h5>
+    <p class="card-text">{{ data['criticalPerOneMillion']}}</p>
+    </div>
+  </div>
+</div>
+<div class="col-sm-3">
+<div class="card border-success mb-3" style="max-width: 16rem;">
+  <div class="card-body text-success">
+    <h5 class="card-title">Recovered cases per one million</h5>
+    <p class="card-text">{{ data['recoveredPerOneMillion']}}</p>
+  </div>
+</div>
+</div>
+<div class="col-sm-3">
+      <div class="card border-danger mb-3" style="max-width: 16rem;">
+        <div class="card-body text-danger">
+       <h5 class="card-title">Deaths cases per one million</h5>
+    <p class="card-text">{{ data['deathsPerOneMillion']}}</p>
+     </div>
+    </div>
+    </div>
+</div>
+
+</center></p>
+    </div></center></p>
+
+    <div class="container text-center">
+
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="card">
+            <div class="card-body" id="chart1">
+              </div>
+              </div>
+              </div>
+            </div>
+<br>
+            <div class="row">
+              <div class="col-sm-12">
+            <div class="card">
+                  <div class="card-body" id="chart2">
+                    </div>
+                    </div>
+                </div>  
+            </div>
+            </div>
+<br><br>
+<p><center>
+  <div class="container text-center">
+<div class="card bg-light mb-3" style="max-width: 100rem;">
+  <div class="card-header"><h2>State Data</h2></div>
+            <table class="table table-striped table-bordered myTable" style="width: 100%;">
+              <thead class="thead-dark">
+                  <tr>
+                      <th>States</th>
+                      <th>Confirmed</th>
+                      <th>Active</th>
+                      <th>Recovered</th>
+                      <th>Deaths</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  {% for i in range(32) %}
+                  <tr>
+                      <td>{{ states[0][i] }}</td>
+                      <td>{{ states[1][i] }}</td>
+                      <td>{{ states[2][i] }}</td>
+                      <td>{{ states[3][i] }}</td>
+                      <td>{{ states[4][i] }}</td>
+                  </tr>
+              {% endfor %}
+              </tbody>
+              <tfoot>
+                  <tr>
+                      <td>Total :</td>
+                      <td>{{ data['cases'] }}</td>
+                      <td>{{ data['active'] }}</td>
+                      <td>{{ data['recovered'] }}</td>
+                      <td>{{ data['deaths'] }}</td>
+                  </tr>
+              </tfoot>
+          </table></div></div></center></p>
+          <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+          <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+          <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>    
+          <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+          <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
+          <script>
+            $('.myTable').DataTable();
+        </script>
+
+<!--Highcharts-->
+<script type="text/javascript">
+
+Highcharts.chart('chart1', {
+  chart: {
+    type: 'column'
+  },
+  title: {
+    text: 'Statewise Confirmed, Active, Recovered and Death cases'
+  },
+  subtitle: {
+    text: 'Top 10 States'
+  },
+  xAxis: {
+    categories: ['{{states[0][0]}}', '{{states[0][1]}}', '{{states[0][2]}}', '{{states[0][3]}}', '{{states[0][4]}}','{{states[0][5]}}','{{states[0][6]}}','{{states[0][7]}}','{{states[0][8]}}','{{states[0][9]}}'],
+    crosshair: true
+  },
+  yAxis: {
+    min: 0,
+    title: {
+      text: 'Number of People Affected'
+    }
+  },
+  tooltip: {
+    headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+    pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+      '<td style="padding:0"><b>{point.y:.1f} </b></td></tr>',
+    footerFormat: '</table>',
+    shared: true,
+    useHTML: true
+  },
+  plotOptions: {
+    column: {
+      pointPadding: 0.2,
+      borderWidth: 0
+    }
+  },
+  series: [{
+                    name: 'Confirmed',
+                    data: {{ states[1][:10] }}
+    }, {
+                    name: 'Active',
+                    data: {{states[2][:10]}}
+    }, {
+                    name: 'Recovered',
+                    data: {{states[3][:10]}}
+    },
+    {
+                    name: 'Deaths',
+                    data: {{states[4][:10]}}
+    }]
+});
+
+
+Highcharts.chart('chart2', {
+
+title: {
+    text: 'Trend of Corona Virus Cases'
+},
+
+subtitle: {
+    text: 'Data plotted for every 30th day'
+},
+
+yAxis: {
+    title: {
+        text: 'Number of Cases'
+    }
+},
+
+xAxis: {
+    accessibility: {
+        rangeDescription: 'Range:'
+    },
+    title: {
+        text: 'Number of Days'
+    },
+    categories: {{day[::30]+[day[-1]]}}
+},
+
+legend: {
+    layout: 'vertical',
+    align: 'right',
+    verticalAlign: 'middle'
+},
+
+plotOptions: {
+    series: {
+        label: {
+            connectorAllowed: false
+        },
+        pointStart: 1
+    }
+},
+
+series: [{
+    name: 'Confirmed',
+    data: {{confirmed[::30]+[confirmed[-1]]}}
+}, {
+    name: 'Deaths',
+    data: {{deaths[::30]+[deaths[-1]]}}
+},
+{
+    name: 'Active',
+    data: {{active[::30]+[active[-1]]}}
+},{
+    name: 'Recovered',
+    data: {{recovered[::30]+[recovered[-1]]}}
+}],
+
+responsive: {
+    rules: [{
+        condition: {
+            maxWidth: 500
+        },
+        chartOptions: {
+            legend: {
+                layout: 'horizontal',
+                align: 'center',
+                verticalAlign: 'bottom'
+            }
+        }
+    }]
+}
+
+});
+
+
+</script>   
+
+</body>
+</html>
